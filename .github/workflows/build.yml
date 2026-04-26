@@ -37,14 +37,16 @@ jobs:
 
       - name: Package macOS app
         working-directory: frontend
-        run: npx electron-builder --mac --x64 --arm64
+        run: npx electron-builder --mac --x64 --arm64 --publish never
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/upload-artifact@v4
         with:
           name: macos-packages
-          path: dist-electron/*.{dmg,zip}
+          path: |
+            dist-electron/*.dmg
+            dist-electron/*.zip
 
   build-windows:
     runs-on: windows-latest
@@ -77,11 +79,13 @@ jobs:
 
       - name: Package Windows app
         working-directory: frontend
-        run: npx electron-builder --win
+        run: npx electron-builder --win --publish never
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/upload-artifact@v4
         with:
           name: windows-packages
-          path: dist-electron/*.{exe,msi}
+          path: |
+            dist-electron/*.exe
+            dist-electron/*.msi
